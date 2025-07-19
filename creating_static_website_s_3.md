@@ -5,7 +5,7 @@
 The goal of this project is to host a static website for a cafe using Amazon S3, apply public access settings, enable versioning, configure lifecycle rules, and implement cross-region replication.
 
 ---
-
+![Static Website Architecture](https://github.com/fadykaram88/Creating-a-Static-Website-for-the-cafe-AWS-Cloud-/blob/main/mod-4-challenge-lab-cafe-static-website-architecture.png?raw=true)
 ## 🛠️ AWS Console Steps
 
 ### 📁 Step 1: Download Website Files
