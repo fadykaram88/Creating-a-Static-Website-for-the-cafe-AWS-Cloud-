@@ -1,0 +1,73 @@
+Project 2 
+Creating a Static Website for the cafe
+1 - firstly open my github and download a file and extract it
+2 -  let's create S3 bucket 
+3 - in the search write S3 then create bucket 
+note : the name of the bucket must be unique 
+4- enable ACLs 
+5 - you muse clear  block all public access if it is assigned then create bucket  
+6 - open the bucket then choose upload 
+7 - upload CSS and Image folders then upload index.html then go down and choose upload 
+8 - inside the S3 bucket open properties then go down then choose Static website hosting then choose edit 
+9 - in Static website hosting choose enable 
+10 - in hosting type choose Host a static website 
+11 - in index document write index.html
+12 - right now I want to make the content of the cafe website public so how ?
+13 - I will create a bucket policy to grant read-only permission to public users so how to create a bucket policy (read-only permission) 
+14 - open the S3 bucket then choose permissions then go down and when you see Bucket policy choose edit 
+15 - in the policy you will see a place to write in 
+so write  this script but don't forget to replace (S3bucket) with the name of the S3 bucket you have created then save the changes and also you will find the link of this script in AWS Document 
+(https://docs.aws.amazon.com/AmazonS3/latest/userguide/HostingWebsiteOnS3Setup.html#step4-add-bucket-policy-make-content-public) this is the link  URL
+ 
+{
+	"Version": "2012-10-17",
+	"Statement": [
+		{
+			"Sid": "PublicReadGetObject",
+			"Effect": "Allow",
+			"Principal": "*",
+			"Action": "s3:GetObject",
+			"Resource": "arn:aws:s3:::S3bucket/*"
+		}
+	]
+}
+
+16 - after writing this script , your website is public now to the users 
+17 - what if you want to copy some files in the same bucket ?
+18 - you can enable the versioning on the S3 bucket so have many copies of the same file 
+19 - Open the S3 bucket then choose properties and choose Bucket versioning and enable it .
+20 - Now I want to modify index.html file then upload it to S3 bucket 
+21 - open the file in your PC and search about bgcolor="aquamarine" and replace it with bgcolor="gainsboro" then search about bgcolor="orange" and replace it with bgcolor="cornsilk" then finally search about bgcolor="aquamarine" and replace it with bgcolor="gainsboro" and save the changes and close the file then upload it to the S3 bucket 
+22 - to ensure that there are 2 files with the same name (index.html ) choose show versions and ensure that they are existed 
+23 - now I want to control the existence in the S3 classes so I will create two rules in the website bucket's lifecycle configurations 
+24 - how to create the 2 rules in the lifecycle configurations ?
+25 - first open the S3 bucket then choose management then choose Lifecycle rules then create lifecycle rule 
+Lifecycle rule name : MovePreviousVersionsAfter30Days
+Rule Scope : Apply to all objects in the bucket 
+Lifecycle rule actions : Transition noncurrent versions of objects between storage classes 
+26 - create rule 
+27 - the second rule 
+Lifecycle rule name : DeletePreviousVersionsAfter365Day
+Rule Scope : Apply to all objects in the bucket
+Lifecycle rule actions : Permanently delete noncurrent versions of objects
+28 - create rule 
+note : the first rule means that all old versions will go to Cheaper class of S3 which is S3 standard IA 
+note : the second rule means that all old versions will be deleted after 1 year 
+29 - after 6 months of selling a lot of pieces of the cafe website I decided to open host the website in other city like Ohio so what can I do ?
+30 -  enable cross-region replication of the first S3 bucket ( the source ) so I will copy the website from the S3 bucket which is in Virginia to be in Ohio 
+31 - first open other AZ such as Ohio and search about S3  then create S3 bucket 
+32 - write new name to the S3 bucket  and enable ACLs and clear Block all public access then enable bucket versioning  then create bucket 
+33 - come back to Virginia to the first S3 bucket and open it then choose management and go down then see Replication rules and choose Create replication rule 
+Replication rule name : ReplicateToOtherRegion
+status : Enabled 
+Rule scope : Apply to all objects in the bucket
+Destination : Choose a bucket in this account
+Bucket name : choose the S3 bucket which you have created in Ohio 
+note : in IAM role choose from existing IAM roles like CafeRole and if it is not existed so choose create a new rule 
+34 - save 
+35 - open the file index.html in your pc for the third time and make any simple change then upload it the first S3 bucket which is in Virginia  then confirm that there are 3 copies of the same file (index.html) then go to the S3 bucket which is in Ohio and I am sure you will see the file which is index.html 
+36 - come back to the S3 bucket in Virginia and delete the latest version of index.html then come back to Ohio to see if the File is also deleted from Ohio or not 
+37 - you will see that the file is not deleted from Ohio although it is deleted in Virginia in the S3 bucket 
+38 - the project is done 
+39 - see you soon in other project 
+40 - goodbye , 
